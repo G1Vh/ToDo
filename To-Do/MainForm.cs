@@ -105,13 +105,11 @@ namespace To_Do
         {
             if (nameTextBox.Text != "")
             {
-                
                 DateTime deadline = Convert.ToDateTime(deadlineCalendar.SelectionRange.Start.ToShortDateString());
                 int daysLeft = DateTime.DaysInMonth(deadlineCalendar.SelectionRange.Start.Year, deadlineCalendar.SelectionRange.Start.Month) - deadlineCalendar.SelectionRange.Start.Day;
                 int monthsLeft = 12 - deadlineCalendar.SelectionRange.Start.Month;
                 switch (repeatBox.Text)
                 {
-
                     case "Каждый день":
 
                         for (int i = 0; i < daysLeft+1; i++)
@@ -126,7 +124,7 @@ namespace To_Do
                         {
                             deadline = Convert.ToDateTime(deadlineCalendar.SelectionRange.Start.ToShortDateString()).AddDays(i);
                             AddToDb(deadline);
-                            i = i + 6;
+                            i += 6;
                         }
                         break;
                     case "Каждый месяц":
@@ -177,7 +175,6 @@ namespace To_Do
 
         private void modifyButton_Click(object sender, EventArgs e)
         {
-
             if (ToDoList.SelectedRows.Count == 0) return;
             addBox.Text = "Изменение дела";
             addButton.Text = "Изменить";
