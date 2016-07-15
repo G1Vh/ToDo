@@ -65,6 +65,9 @@ namespace To_Do
             string cell1 = ToDoList.SelectedRows[0].Cells[1].Value.ToString();
             string cell3 = ToDoList.SelectedRows[0].Cells[3].Value.ToString();
 
+            //Search for identical strings
+            //Поиск одинаковых строк
+
             for (int i = ToDoList.Rows.Count - 1; i > -1; i--)
             {
                 DataGridViewRow row = ToDoList.Rows[i];
@@ -89,6 +92,10 @@ namespace To_Do
             if (fromTextBox.Text == "" || toTextBox.Text == "") return;
             try
             {
+
+                //There must be a way for easier conversion.
+                //Должен быть способ конвертировать проще.
+
                 string fromDate = Convert.ToDateTime(fromTextBox.Text).ToString("yyyyMMdd");
                 string toDate = Convert.ToDateTime(toTextBox.Text).ToString("yyyyMMdd");
                 FillTable("SELECT * FROM List WHERE Deadline BETWEEN '" + fromDate + "' AND '" + toDate + "'");
@@ -104,22 +111,27 @@ namespace To_Do
         {
             if (nameTextBox.Text != "")
             {
-                DateTime deadline = Convert.ToDateTime(deadlineCalendar.SelectionRange.Start.ToShortDateString());
-                int daysLeft = DateTime.DaysInMonth(deadlineCalendar.SelectionRange.Start.Year, deadlineCalendar.SelectionRange.Start.Month) - deadlineCalendar.SelectionRange.Start.Day;
-                int monthsLeft = 12 - deadlineCalendar.SelectionRange.Start.Month;
+                string selectedShortDate = deadlineCalendar.SelectionRange.Start.ToShortDateString();
+                int selectedDay = deadlineCalendar.SelectionRange.Start.Day;
+                int selectedMonth = deadlineCalendar.SelectionRange.Start.Month;
+                int selectedYear = deadlineCalendar.SelectionRange.Start.Year;
+                int daysLeft = DateTime.DaysInMonth(selectedYear, selectedMonth) - selectedDay;
+                int monthsLeft = 12 - selectedMonth;
+                DateTime deadline = Convert.ToDateTime(selectedShortDate);
+
                 switch (repeatBox.Text)
                 {
                     case "Каждый день":
                         for (int i = 0; i < daysLeft+1; i++)
                         {
-                            deadline = Convert.ToDateTime(deadlineCalendar.SelectionRange.Start.ToShortDateString()).AddDays(i);
+                            deadline = Convert.ToDateTime(selectedShortDate).AddDays(i);
                             AddToDb(deadline);
                         }
                         break;
                     case "Каждую неделю":
                         for (int i = 0; i < daysLeft+1;i++)
                         {
-                            deadline = Convert.ToDateTime(deadlineCalendar.SelectionRange.Start.ToShortDateString()).AddDays(i);
+                            deadline = Convert.ToDateTime(selectedShortDate).AddDays(i);
                             AddToDb(deadline);
                             i += 6;
                         }
@@ -127,7 +139,7 @@ namespace To_Do
                     case "Каждый месяц":
                         for (int i = 0; i < monthsLeft+1; i++)
                         {
-                            deadline = Convert.ToDateTime(deadlineCalendar.SelectionRange.Start.ToShortDateString()).AddMonths(i);
+                            deadline = Convert.ToDateTime(selectedShortDate).AddMonths(i);
                             AddToDb(deadline);
                         }
                         break;
@@ -138,6 +150,10 @@ namespace To_Do
                 nameTextBox.Text = "";
                 deadlineCalendar.SetDate(DateTime.Now);
                 repeatBox.Text = "";
+
+                //Многозадачные лэйблы
+                //Multitasking labels
+
                 addBox.Text = "Добавление дела";
                 addButton.Text = "Добавить";
             }
@@ -173,13 +189,23 @@ namespace To_Do
         private void modifyButton_Click(object sender, EventArgs e)
         {
             if (ToDoList.SelectedRows.Count == 0) return;
+
+            //Многозадачные лэйблы
+            //Multitasking labels
+
             addBox.Text = "Изменение дела";
             addButton.Text = "Изменить";
+
+            //Запись значений таблицы в текстбоксы.
+            //Copy table values to textboxes.
 
             nameTextBox.Text = ToDoList.SelectedRows[0].Cells[1].Value.ToString();
             deadlineCalendar.SetSelectionRange(Convert.ToDateTime(ToDoList.SelectedRows[0].Cells[2].Value.ToString()),
                 Convert.ToDateTime(ToDoList.SelectedRows[0].Cells[2].Value.ToString()));
             repeatBox.Text = ToDoList.SelectedRows[0].Cells[3].Value.ToString();
+
+            //Удаление из таблицы устаревших данных.
+            //Remove old data from table.
 
             for (int i = ToDoList.Rows.Count-1; i >-1; i--)
             {
@@ -190,7 +216,6 @@ namespace To_Do
                     ToDoList.Rows.Remove(row);
                 }
             }
-
             _dataAdapter.Update((DataTable)_bindingSource.DataSource);
         }
 
