@@ -79,7 +79,6 @@ namespace To_Do
                     {
                         ErrorLog(ex);
                     }
-
                 }
             }
             _dataAdapter.Update((DataTable) _bindingSource.DataSource);
@@ -111,7 +110,6 @@ namespace To_Do
                 switch (repeatBox.Text)
                 {
                     case "Каждый день":
-
                         for (int i = 0; i < daysLeft+1; i++)
                         {
                             deadline = Convert.ToDateTime(deadlineCalendar.SelectionRange.Start.ToShortDateString()).AddDays(i);
@@ -119,7 +117,6 @@ namespace To_Do
                         }
                         break;
                     case "Каждую неделю":
-
                         for (int i = 0; i < daysLeft+1;i++)
                         {
                             deadline = Convert.ToDateTime(deadlineCalendar.SelectionRange.Start.ToShortDateString()).AddDays(i);
