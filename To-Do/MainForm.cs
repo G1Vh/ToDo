@@ -141,18 +141,10 @@ namespace To_Do
 
         private void filterButton_Click(object sender, EventArgs e)
         {
-            try
-            {
-                string fromDate = fromDatePicker.Value.ToString("yyyyMMdd");
-                string toDate = toDatePicker.Value.ToString("yyyyMMdd");
-                FillTable($"SELECT * FROM List WHERE Deadline BETWEEN '{fromDate}' AND '{toDate}'");
-                ToDoList.DataSource = _bindingSource;
-            }
-            catch (FormatException ex)
-            {
-                MessageBox.Show("Некорректный ввод даты.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-                ErrorLog(ex);
-            }
+            string fromDate = fromDatePicker.Value.ToString("yyyyMMdd");
+            string toDate = toDatePicker.Value.ToString("yyyyMMdd");
+            FillTable($"SELECT * FROM List WHERE Deadline BETWEEN '{fromDate}' AND '{toDate}'");
+            ToDoList.DataSource = _bindingSource;
         }
 
         private void addButton_Click(object sender, EventArgs e)
