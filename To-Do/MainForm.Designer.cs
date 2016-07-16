@@ -126,13 +126,15 @@
             // 
             // repeatBox
             // 
+            this.repeatBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.repeatBox.FormattingEnabled = true;
             this.repeatBox.Items.AddRange(new object[] {
+            "Нет",
             "Каждый день",
             "Каждую неделю",
             "Каждый месяц"});
             this.repeatBox.Location = new System.Drawing.Point(66, 123);
-            this.repeatBox.MaxLength = 255;
+            this.repeatBox.MaxLength = 13;
             this.repeatBox.Name = "repeatBox";
             this.repeatBox.Size = new System.Drawing.Size(121, 21);
             this.repeatBox.TabIndex = 12;
@@ -147,7 +149,7 @@
             // nameTextBox
             // 
             this.nameTextBox.Location = new System.Drawing.Point(11, 72);
-            this.nameTextBox.MaxLength = 255;
+            this.nameTextBox.MaxLength = 100;
             this.nameTextBox.Name = "nameTextBox";
             this.nameTextBox.Size = new System.Drawing.Size(230, 20);
             this.nameTextBox.TabIndex = 10;

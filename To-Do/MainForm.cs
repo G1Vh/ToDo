@@ -23,10 +23,29 @@ namespace To_Do
         {
             if (!File.Exists("db.sdf"))
             {
-                MessageBox.Show("База данных не обнаружена! Приложение будет закрыто.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Application.Exit();
+                using (SqlCeEngine engine = new SqlCeEngine(ConnectionString))
+                {
+                    engine.CreateDatabase();
+                }
+                using (SqlCeConnection connection = new SqlCeConnection(ConnectionString))
+                {
+                    connection.Open();
+                    using (SqlCeCommand command = new SqlCeCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandText =
+                            "CREATE TABLE List (id int IDENTITY (1,1) NOT NULL PRIMARY KEY, Name nvarchar(100) NOT NULL, Deadline datetime NOT NULL, Repeat nvarchar(13) NOT NULL)";
+                        command.ExecuteNonQuery();
+                    }
+                    connection.Close();
+                }
             }
             RefreshList();
+
+            //Default repeat value - Нет.
+            //Значение повторяемости по умолчанию - Нет.
+
+            repeatBox.SelectedIndex = 0;
         }
 
         private void FillTable(string selectCommand)
@@ -151,8 +170,8 @@ namespace To_Do
                 deadlineCalendar.SetDate(DateTime.Now);
                 repeatBox.Text = "";
 
-                //Многозадачные лэйблы
                 //Multitasking labels
+                //Многозадачные лэйблы
 
                 addBox.Text = "Добавление дела";
                 addButton.Text = "Добавить";
@@ -190,8 +209,8 @@ namespace To_Do
         {
             if (ToDoList.SelectedRows.Count == 0) return;
 
-            //Многозадачные лэйблы
             //Multitasking labels
+            //Многозадачные лэйблы
 
             addBox.Text = "Изменение дела";
             addButton.Text = "Изменить";
@@ -204,9 +223,9 @@ namespace To_Do
                 Convert.ToDateTime(ToDoList.SelectedRows[0].Cells[2].Value.ToString()));
             repeatBox.Text = ToDoList.SelectedRows[0].Cells[3].Value.ToString();
 
-            //Удаление из таблицы устаревших данных.
             //Remove old data from table.
-
+            //Удаление из таблицы устаревших данных.
+            
             for (int i = ToDoList.Rows.Count-1; i >-1; i--)
             {
                 DataGridViewRow row = ToDoList.Rows[i];
