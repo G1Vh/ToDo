@@ -81,12 +81,30 @@ namespace To_Do
 
         private void RefreshList()
         {
-            FillTable("SELECT * FROM List");
-            ToDoList.DataSource = _bindingSource;
-            ToDoList.Columns[0].Visible = false;
-            ToDoList.Columns[1].HeaderText = "Наименование";
-            ToDoList.Columns[2].HeaderText = "Крайний срок";
-            ToDoList.Columns[3].HeaderText = "Периодичность";
+            try
+            {
+                FillTable("SELECT * FROM List");
+                ToDoList.DataSource = _bindingSource;
+                ToDoList.Columns[0].Visible = false;
+                ToDoList.Columns[1].HeaderText = "Наименование";
+                ToDoList.Columns[2].HeaderText = "Крайний срок";
+                ToDoList.Columns[3].HeaderText = "Периодичность";
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                ErrorLog(ex);
+                if (MessageBox.Show("При чтении из базы возникла ошибка, вероятно, база повреждена! Пересоздать базу?",
+                    "Ошибка", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    File.Delete("db.sdf");
+                    CheckDB();
+                    RefreshList();
+                }
+                else
+                {
+                    Application.Exit();
+                }
+            }
         }
 
         private void deleteButton_Click(object sender, EventArgs e)
