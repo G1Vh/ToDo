@@ -32,32 +32,29 @@ namespace To_Do
 
         private void CheckDB()
         {
-            if (!File.Exists("db.sdf"))
+            if (File.Exists("db.sdf")) return;
+            using (SqlCeEngine engine = new SqlCeEngine(ConnectionString))
             {
-                using (SqlCeEngine engine = new SqlCeEngine(ConnectionString))
+                try
                 {
-                    try
-                    {
-                        engine.CreateDatabase();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("При создании базы возникла ошибка!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        ErrorLog(ex);
-                        Application.Exit();
-                    }
-
+                    engine.CreateDatabase();
                 }
-                using (SqlCeConnection connection = new SqlCeConnection(ConnectionString))
+                catch (Exception ex)
                 {
-                    connection.Open();
-                    using (SqlCeCommand command = new SqlCeCommand())
-                    {
-                        command.Connection = connection;
-                        command.CommandText =
-                            "CREATE TABLE List (id int IDENTITY (1,1) NOT NULL PRIMARY KEY, Name nvarchar(100) NOT NULL, Deadline datetime NOT NULL, Repeat nvarchar(13) NOT NULL)";
-                        command.ExecuteNonQuery();
-                    }
+                    MessageBox.Show("При создании базы возникла ошибка!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    ErrorLog(ex);
+                    Application.Exit();
+                }
+            }
+            using (SqlCeConnection connection = new SqlCeConnection(ConnectionString))
+            {
+                connection.Open();
+                using (SqlCeCommand command = new SqlCeCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText =
+                        "CREATE TABLE List (id int IDENTITY (1,1) NOT NULL PRIMARY KEY, Name nvarchar(100) NOT NULL, Deadline datetime NOT NULL, Repeat nvarchar(13) NOT NULL)";
+                    command.ExecuteNonQuery();
                 }
             }
         }
@@ -185,7 +182,7 @@ namespace To_Do
                     AddToDb(deadline);
                     break;
             }
-            nameTextBox.Text = "";
+            nameTextBox.Clear();
             deadlineCalendar.SetDate(DateTime.Now);
 
             //Multitasking labels
