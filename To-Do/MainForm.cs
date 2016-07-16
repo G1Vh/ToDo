@@ -143,8 +143,8 @@ namespace To_Do
         {
             try
             {
-                string fromDate = Convert.ToDateTime(fromTextBox.Text).ToString("yyyyMMdd");
-                string toDate = Convert.ToDateTime(toTextBox.Text).ToString("yyyyMMdd");
+                string fromDate = fromDatePicker.Value.ToString("yyyyMMdd");
+                string toDate = toDatePicker.Value.ToString("yyyyMMdd");
                 FillTable($"SELECT * FROM List WHERE Deadline BETWEEN '{fromDate}' AND '{toDate}'");
                 ToDoList.DataSource = _bindingSource;
             }
@@ -253,11 +253,13 @@ namespace To_Do
 
             //Запись значений таблицы в текстбоксы.
             //Copy table values to textboxes.
+            string selectionCells1 = ToDoList.SelectedRows[0].Cells[1].Value.ToString();
+            string selectionCells2 = ToDoList.SelectedRows[0].Cells[2].Value.ToString();
+            string selectionCells3 = ToDoList.SelectedRows[0].Cells[3].Value.ToString();
 
-            nameTextBox.Text = ToDoList.SelectedRows[0].Cells[1].Value.ToString();
-            deadlineCalendar.SetSelectionRange(Convert.ToDateTime(ToDoList.SelectedRows[0].Cells[2].Value.ToString()),
-                Convert.ToDateTime(ToDoList.SelectedRows[0].Cells[2].Value.ToString()));
-            repeatBox.Text = ToDoList.SelectedRows[0].Cells[3].Value.ToString();
+            nameTextBox.Text = selectionCells1;
+            deadlineCalendar.SetSelectionRange(Convert.ToDateTime(selectionCells2), Convert.ToDateTime(selectionCells2));
+            repeatBox.Text = selectionCells3;
 
             //Remove old data from table.
             //Удаление из таблицы устаревших данных.
@@ -277,8 +279,8 @@ namespace To_Do
         private void showAllButton_Click(object sender, EventArgs e)
         {
             RefreshList();
-            fromTextBox.Clear();
-            toTextBox.Clear();
+            fromDatePicker.Value = DateTime.Today;
+            toDatePicker.Value = DateTime.Today;
         }
 
         private static void ErrorLog(Exception ex)
@@ -297,6 +299,16 @@ namespace To_Do
             {
                 // ignored
             }
+        }
+
+        private void fromDatePicker_ValueChanged(object sender, EventArgs e)
+        {
+            if (toDatePicker.Value < fromDatePicker.Value) toDatePicker.Value = fromDatePicker.Value;
+        }
+
+        private void toDatePicker_ValueChanged(object sender, EventArgs e)
+        {
+            if (toDatePicker.Value < fromDatePicker.Value) fromDatePicker.Value = toDatePicker.Value;
         }
     }
 }

@@ -45,8 +45,8 @@
             this.showAllButton = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.fromTextBox = new System.Windows.Forms.MaskedTextBox();
-            this.toTextBox = new System.Windows.Forms.MaskedTextBox();
+            this.fromDatePicker = new System.Windows.Forms.DateTimePicker();
+            this.toDatePicker = new System.Windows.Forms.DateTimePicker();
             ((System.ComponentModel.ISupportInitialize)(this.ToDoList)).BeginInit();
             this.addBox.SuspendLayout();
             this.SuspendLayout();
@@ -218,29 +218,31 @@
             this.label6.TabIndex = 20;
             this.label6.Text = "Конечная дата";
             // 
-            // fromTextBox
+            // fromDatePicker
             // 
-            this.fromTextBox.Location = new System.Drawing.Point(29, 133);
-            this.fromTextBox.Mask = "00.00.0000";
-            this.fromTextBox.Name = "fromTextBox";
-            this.fromTextBox.Size = new System.Drawing.Size(62, 20);
-            this.fromTextBox.TabIndex = 21;
+            this.fromDatePicker.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.fromDatePicker.Location = new System.Drawing.Point(12, 134);
+            this.fromDatePicker.Name = "fromDatePicker";
+            this.fromDatePicker.Size = new System.Drawing.Size(91, 20);
+            this.fromDatePicker.TabIndex = 16;
+            this.fromDatePicker.ValueChanged += new System.EventHandler(this.fromDatePicker_ValueChanged);
             // 
-            // toTextBox
+            // toDatePicker
             // 
-            this.toTextBox.Location = new System.Drawing.Point(28, 167);
-            this.toTextBox.Mask = "00.00.0000";
-            this.toTextBox.Name = "toTextBox";
-            this.toTextBox.Size = new System.Drawing.Size(62, 20);
-            this.toTextBox.TabIndex = 22;
+            this.toDatePicker.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.toDatePicker.Location = new System.Drawing.Point(12, 170);
+            this.toDatePicker.Name = "toDatePicker";
+            this.toDatePicker.Size = new System.Drawing.Size(91, 20);
+            this.toDatePicker.TabIndex = 23;
+            this.toDatePicker.ValueChanged += new System.EventHandler(this.toDatePicker_ValueChanged);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(907, 261);
-            this.Controls.Add(this.toTextBox);
-            this.Controls.Add(this.fromTextBox);
+            this.Controls.Add(this.toDatePicker);
+            this.Controls.Add(this.fromDatePicker);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.showAllButton);
@@ -282,8 +284,8 @@
         private System.Windows.Forms.Button showAllButton;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.MaskedTextBox fromTextBox;
-        private System.Windows.Forms.MaskedTextBox toTextBox;
+        private System.Windows.Forms.DateTimePicker fromDatePicker;
+        private System.Windows.Forms.DateTimePicker toDatePicker;
     }
 }
 
