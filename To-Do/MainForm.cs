@@ -21,6 +21,17 @@ namespace To_Do
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            CheckDB();
+            RefreshList();
+
+            //Default repeat value - Нет.
+            //Значение повторяемости по умолчанию - Нет.
+
+            repeatBox.SelectedIndex = 0;
+        }
+
+        private void CheckDB()
+        {
             if (!File.Exists("db.sdf"))
             {
                 using (SqlCeEngine engine = new SqlCeEngine(ConnectionString))
@@ -37,15 +48,8 @@ namespace To_Do
                             "CREATE TABLE List (id int IDENTITY (1,1) NOT NULL PRIMARY KEY, Name nvarchar(100) NOT NULL, Deadline datetime NOT NULL, Repeat nvarchar(13) NOT NULL)";
                         command.ExecuteNonQuery();
                     }
-                    connection.Close();
                 }
             }
-            RefreshList();
-
-            //Default repeat value - Нет.
-            //Значение повторяемости по умолчанию - Нет.
-
-            repeatBox.SelectedIndex = 0;
         }
 
         private void FillTable(string selectCommand)
@@ -168,7 +172,6 @@ namespace To_Do
                 }
                 nameTextBox.Text = "";
                 deadlineCalendar.SetDate(DateTime.Now);
-                repeatBox.Text = "";
 
                 //Multitasking labels
                 //Многозадачные лэйблы
@@ -196,7 +199,6 @@ namespace To_Do
                     cmd.Parameters.AddWithValue("@deadline", deadline);
                     cmd.Parameters.AddWithValue("@repeat", repeatBox.Text);
                     cmd.ExecuteNonQuery();
-                    connection.Close();
                 }
             }
             catch (Exception ex)
