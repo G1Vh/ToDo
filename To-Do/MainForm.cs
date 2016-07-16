@@ -117,7 +117,7 @@ namespace To_Do
 
                 string fromDate = Convert.ToDateTime(fromTextBox.Text).ToString("yyyyMMdd");
                 string toDate = Convert.ToDateTime(toTextBox.Text).ToString("yyyyMMdd");
-                FillTable("SELECT * FROM List WHERE Deadline BETWEEN '" + fromDate + "' AND '" + toDate + "'");
+                FillTable($"SELECT * FROM List WHERE Deadline BETWEEN '{fromDate}' AND '{toDate}'");
                 ToDoList.DataSource = _bindingSource;
             }
             catch (FormatException ex)
