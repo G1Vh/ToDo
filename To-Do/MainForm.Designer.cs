@@ -220,18 +220,18 @@
             // 
             // fromTextBox
             // 
-            this.fromTextBox.Location = new System.Drawing.Point(21, 133);
+            this.fromTextBox.Location = new System.Drawing.Point(29, 133);
             this.fromTextBox.Mask = "00.00.0000";
             this.fromTextBox.Name = "fromTextBox";
-            this.fromTextBox.Size = new System.Drawing.Size(75, 20);
+            this.fromTextBox.Size = new System.Drawing.Size(62, 20);
             this.fromTextBox.TabIndex = 21;
             // 
             // toTextBox
             // 
-            this.toTextBox.Location = new System.Drawing.Point(21, 167);
+            this.toTextBox.Location = new System.Drawing.Point(28, 167);
             this.toTextBox.Mask = "00.00.0000";
             this.toTextBox.Name = "toTextBox";
-            this.toTextBox.Size = new System.Drawing.Size(75, 20);
+            this.toTextBox.Size = new System.Drawing.Size(62, 20);
             this.toTextBox.TabIndex = 22;
             // 
             // MainForm
