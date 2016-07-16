@@ -53,7 +53,9 @@ namespace To_Do
                 {
                     command.Connection = connection;
                     command.CommandText =
-                        "CREATE TABLE List (id int IDENTITY (1,1) NOT NULL PRIMARY KEY, Name nvarchar(100) NOT NULL, Deadline datetime NOT NULL, Repeat nvarchar(13) NOT NULL)";
+                        "CREATE TABLE List (id int IDENTITY (1,1) NOT NULL PRIMARY KEY, " +
+                        "Name nvarchar(100) NOT NULL, Deadline datetime NOT NULL, " +
+                        "Repeat nvarchar(13) NOT NULL)";
                     command.ExecuteNonQuery();
                 }
             }
@@ -200,9 +202,6 @@ namespace To_Do
 
             addBox.Text = @"Добавление дела";
             addButton.Text = @"Добавить";
-
-
-
             RefreshList();
         }
 
