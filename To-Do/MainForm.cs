@@ -36,7 +36,17 @@ namespace To_Do
             {
                 using (SqlCeEngine engine = new SqlCeEngine(ConnectionString))
                 {
-                    engine.CreateDatabase();
+                    try
+                    {
+                        engine.CreateDatabase();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("При создании базы возникла ошибка!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        ErrorLog(ex);
+                        Application.Exit();
+                    }
+
                 }
                 using (SqlCeConnection connection = new SqlCeConnection(ConnectionString))
                 {
@@ -84,7 +94,11 @@ namespace To_Do
 
         private void deleteButton_Click(object sender, EventArgs e)
         {
-            if (ToDoList.SelectedRows.Count == 0) return;
+            if (ToDoList.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Выберите дело для удаления.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                return;
+            }
             string cell1 = ToDoList.SelectedRows[0].Cells[1].Value.ToString();
             string cell3 = ToDoList.SelectedRows[0].Cells[3].Value.ToString();
 
@@ -112,13 +126,8 @@ namespace To_Do
 
         private void filterButton_Click(object sender, EventArgs e)
         {
-            if (fromTextBox.Text == "" || toTextBox.Text == "") return;
             try
             {
-
-                //There must be a way for easier conversion.
-                //Должен быть способ конвертировать проще.
-
                 string fromDate = Convert.ToDateTime(fromTextBox.Text).ToString("yyyyMMdd");
                 string toDate = Convert.ToDateTime(toTextBox.Text).ToString("yyyyMMdd");
                 FillTable($"SELECT * FROM List WHERE Deadline BETWEEN '{fromDate}' AND '{toDate}'");
@@ -126,61 +135,66 @@ namespace To_Do
             }
             catch (FormatException ex)
             {
+                MessageBox.Show("Некорректный ввод даты.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                 ErrorLog(ex);
             }
         }
 
         private void addButton_Click(object sender, EventArgs e)
         {
-            if (nameTextBox.Text != "")
+            if (nameTextBox.Text == "")
             {
-                string selectedShortDate = deadlineCalendar.SelectionRange.Start.ToShortDateString();
-                int selectedDay = deadlineCalendar.SelectionRange.Start.Day;
-                int selectedMonth = deadlineCalendar.SelectionRange.Start.Month;
-                int selectedYear = deadlineCalendar.SelectionRange.Start.Year;
-                int daysLeft = DateTime.DaysInMonth(selectedYear, selectedMonth) - selectedDay;
-                int monthsLeft = 12 - selectedMonth;
-                DateTime deadline = Convert.ToDateTime(selectedShortDate);
-
-                switch (repeatBox.Text)
-                {
-                    case "Каждый день":
-                        for (int i = 0; i < daysLeft+1; i++)
-                        {
-                            deadline = Convert.ToDateTime(selectedShortDate).AddDays(i);
-                            AddToDb(deadline);
-                        }
-                        break;
-                    case "Каждую неделю":
-                        for (int i = 0; i < daysLeft+1;i++)
-                        {
-                            deadline = Convert.ToDateTime(selectedShortDate).AddDays(i);
-                            AddToDb(deadline);
-                            i += 6;
-                        }
-                        break;
-                    case "Каждый месяц":
-                        for (int i = 0; i < monthsLeft+1; i++)
-                        {
-                            deadline = Convert.ToDateTime(selectedShortDate).AddMonths(i);
-                            AddToDb(deadline);
-                        }
-                        break;
-                    default:
-                        AddToDb(deadline);
-                        break;
-                }
-                nameTextBox.Text = "";
-                deadlineCalendar.SetDate(DateTime.Now);
-
-                //Multitasking labels
-                //Многозадачные лэйблы
-
-                addBox.Text = "Добавление дела";
-                addButton.Text = "Добавить";
+                MessageBox.Show("Заполните поле 'Наименование'.", "Ошибка", MessageBoxButtons.OK,
+                    MessageBoxIcon.Asterisk);
+                return;
             }
-            else
-                MessageBox.Show("Заполните поле 'Наименование'", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+
+            string selectedShortDate = deadlineCalendar.SelectionRange.Start.ToShortDateString();
+            int selectedDay = deadlineCalendar.SelectionRange.Start.Day;
+            int selectedMonth = deadlineCalendar.SelectionRange.Start.Month;
+            int selectedYear = deadlineCalendar.SelectionRange.Start.Year;
+            int daysLeft = DateTime.DaysInMonth(selectedYear, selectedMonth) - selectedDay;
+            int monthsLeft = 12 - selectedMonth;
+            DateTime deadline = Convert.ToDateTime(selectedShortDate);
+
+            switch (repeatBox.Text)
+            {
+                case "Каждый день":
+                    for (int i = 0; i < daysLeft + 1; i++)
+                    {
+                        deadline = Convert.ToDateTime(selectedShortDate).AddDays(i);
+                        AddToDb(deadline);
+                    }
+                    break;
+                case "Каждую неделю":
+                    for (int i = 0; i < daysLeft + 1; i++)
+                    {
+                        deadline = Convert.ToDateTime(selectedShortDate).AddDays(i);
+                        AddToDb(deadline);
+                        i += 6;
+                    }
+                    break;
+                case "Каждый месяц":
+                    for (int i = 0; i < monthsLeft + 1; i++)
+                    {
+                        deadline = Convert.ToDateTime(selectedShortDate).AddMonths(i);
+                        AddToDb(deadline);
+                    }
+                    break;
+                default:
+                    AddToDb(deadline);
+                    break;
+            }
+            nameTextBox.Text = "";
+            deadlineCalendar.SetDate(DateTime.Now);
+
+            //Multitasking labels
+            //Многозадачные лэйблы
+
+            addBox.Text = "Добавление дела";
+            addButton.Text = "Добавить";
+
+
 
             RefreshList();
         }
@@ -203,13 +217,18 @@ namespace To_Do
             }
             catch (Exception ex)
             {
+                MessageBox.Show("Ошибка записи в базу!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 ErrorLog(ex);
             }
         }
 
         private void modifyButton_Click(object sender, EventArgs e)
         {
-            if (ToDoList.SelectedRows.Count == 0) return;
+            if (ToDoList.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Выберите дело для изменения.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                return;
+            }
 
             //Multitasking labels
             //Многозадачные лэйблы
