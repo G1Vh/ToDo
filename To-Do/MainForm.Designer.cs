@@ -222,6 +222,8 @@
             // 
             this.fromDatePicker.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.fromDatePicker.Location = new System.Drawing.Point(12, 134);
+            this.fromDatePicker.MaxDate = new System.DateTime(2099, 12, 31, 0, 0, 0, 0);
+            this.fromDatePicker.MinDate = new System.DateTime(2000, 1, 1, 0, 0, 0, 0);
             this.fromDatePicker.Name = "fromDatePicker";
             this.fromDatePicker.Size = new System.Drawing.Size(91, 20);
             this.fromDatePicker.TabIndex = 16;
@@ -231,6 +233,8 @@
             // 
             this.toDatePicker.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.toDatePicker.Location = new System.Drawing.Point(12, 170);
+            this.toDatePicker.MaxDate = new System.DateTime(2099, 12, 31, 0, 0, 0, 0);
+            this.toDatePicker.MinDate = new System.DateTime(2000, 1, 1, 0, 0, 0, 0);
             this.toDatePicker.Name = "toDatePicker";
             this.toDatePicker.Size = new System.Drawing.Size(91, 20);
             this.toDatePicker.TabIndex = 23;
