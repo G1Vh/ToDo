@@ -41,7 +41,7 @@ namespace To_Do
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("При создании базы возникла ошибка!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(@"При создании базы возникла ошибка!", @"Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     ErrorLog(ex);
                     Application.Exit();
                 }
@@ -86,15 +86,15 @@ namespace To_Do
                 FillTable("SELECT * FROM List");
                 ToDoList.DataSource = _bindingSource;
                 ToDoList.Columns[0].Visible = false;
-                ToDoList.Columns[1].HeaderText = "Наименование";
-                ToDoList.Columns[2].HeaderText = "Крайний срок";
-                ToDoList.Columns[3].HeaderText = "Периодичность";
+                ToDoList.Columns[1].HeaderText = @"Наименование";
+                ToDoList.Columns[2].HeaderText = @"Крайний срок";
+                ToDoList.Columns[3].HeaderText = @"Периодичность";
             }
             catch (ArgumentOutOfRangeException ex)
             {
                 ErrorLog(ex);
-                if (MessageBox.Show("При чтении из базы возникла ошибка, вероятно, база повреждена! Пересоздать базу?",
-                    "Ошибка", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                if (MessageBox.Show(@"При чтении из базы возникла ошибка, вероятно, база повреждена! Пересоздать базу?",
+                    @"Ошибка", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     File.Delete("db.sdf");
                     CheckDB();
@@ -111,7 +111,7 @@ namespace To_Do
         {
             if (ToDoList.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Выберите дело для удаления.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                MessageBox.Show(@"Выберите дело для удаления.", @"Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                 return;
             }
             string cell1 = ToDoList.SelectedRows[0].Cells[1].Value.ToString();
@@ -151,7 +151,7 @@ namespace To_Do
         {
             if (nameTextBox.Text == "")
             {
-                MessageBox.Show("Заполните поле 'Наименование'.", "Ошибка", MessageBoxButtons.OK,
+                MessageBox.Show(@"Заполните поле ""Наименование"".", @"Ошибка", MessageBoxButtons.OK,
                     MessageBoxIcon.Asterisk);
                 return;
             }
@@ -198,8 +198,8 @@ namespace To_Do
             //Multitasking labels
             //Многозадачные лэйблы
 
-            addBox.Text = "Добавление дела";
-            addButton.Text = "Добавить";
+            addBox.Text = @"Добавление дела";
+            addButton.Text = @"Добавить";
 
 
 
@@ -224,7 +224,7 @@ namespace To_Do
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Ошибка записи в базу!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(@"Ошибка записи в базу!", @"Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 ErrorLog(ex);
             }
         }
@@ -233,15 +233,15 @@ namespace To_Do
         {
             if (ToDoList.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Выберите дело для изменения.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                MessageBox.Show(@"Выберите дело для изменения.", @"Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                 return;
             }
 
             //Multitasking labels
             //Многозадачные лэйблы
 
-            addBox.Text = "Изменение дела";
-            addButton.Text = "Изменить";
+            addBox.Text = @"Изменение дела";
+            addButton.Text = @"Изменить";
 
             //Запись значений таблицы в текстбоксы.
             //Copy table values to textboxes.
